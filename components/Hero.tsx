@@ -1,8 +1,36 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShinyButton } from './ui/ShinyButton';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useToast } from '../contexts/ToastContext';
 
 export const Hero: React.FC = () => {
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
+  const handleExploreProducts = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    // Primero intentar scroll suave si estamos en home
+    const element = document.querySelector('#products');
+    if (element && window.location.pathname === '/') {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    } else {
+      // Si no estamos en home, navegar a shop
+      navigate('/shop');
+    }
+  };
+
+  const handleWatchVideo = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    showToast('Reproduciendo video concepto...', 'info');
+  };
+
   return (
     <section id="hero" className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-20 text-center">
       
@@ -39,10 +67,13 @@ export const Hero: React.FC = () => {
 
         {/* CTAs */}
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <ShinyButton className="w-full sm:w-auto">
+          <ShinyButton className="w-full sm:w-auto" onClick={handleExploreProducts}>
             Explorar Productos <ArrowRight className="ml-2 h-4 w-4" />
           </ShinyButton>
-          <button className="group flex items-center gap-2 rounded-full px-8 py-3 text-sm font-medium text-neutral-400 transition-colors hover:text-white">
+          <button 
+            onClick={handleWatchVideo}
+            className="group flex items-center gap-2 rounded-full px-8 py-3 text-sm font-medium text-neutral-400 transition-colors hover:text-white"
+          >
             Ver Video Concepto 
             <div className="flex h-6 w-6 items-center justify-center rounded-full border border-neutral-700 bg-neutral-800 transition-all group-hover:scale-110 group-hover:bg-white group-hover:text-black">
                 <span className="ml-0.5 text-[10px]">▶</span>

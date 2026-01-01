@@ -1,7 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShinyButton } from './ui/ShinyButton';
+import { useToast } from '../contexts/ToastContext';
 
 export const CTA: React.FC = () => {
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
+  const handleBuyNow = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate('/shop');
+  };
+
   return (
     <section className="relative py-24 px-6 overflow-hidden">
       <div className="absolute inset-0 bg-neutral-950"></div>
@@ -17,7 +27,7 @@ export const CTA: React.FC = () => {
         </p>
         
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <ShinyButton className="w-full sm:w-auto px-12 h-14 text-lg">
+            <ShinyButton className="w-full sm:w-auto px-12 h-14 text-lg" onClick={handleBuyNow}>
                 Comprar Ahora
             </ShinyButton>
         </div>
